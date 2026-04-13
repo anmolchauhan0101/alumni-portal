@@ -1,17 +1,17 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://alumni-portal-a442.onrender.com/api",
+  baseURL: "https://alumni-portal-a442.onrender.com/api", // ✅ your backend
 });
 
-// ✅ Attach token
+// ✅ attach token automatically
 API.interceptors.request.use((req) => {
-  if (typeof window !== "undefined") {
-    const token = localStorage.getItem("token");
-    if (token) {
-      req.headers.Authorization = `Bearer ${token}`;
-    }
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    req.headers.Authorization = `Bearer ${token}`;
   }
+
   return req;
 });
 

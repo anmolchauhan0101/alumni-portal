@@ -19,15 +19,16 @@ export default function Login() {
         password,
       });
 
-      // ✅ Save token
-      console.log("TOKEN SAVED:", res.data.token);
+      // ✅ IMPORTANT FIX
+      localStorage.setItem("token", res.data.token);
 
-      // 🔥 FIX: notify header instantly
+      // notify UI
       window.dispatchEvent(new Event("authChanged"));
 
-      // ✅ Redirect
       router.push("/dashboard");
+
     } catch (err) {
+      console.error(err);
       alert("Login failed");
     }
   };

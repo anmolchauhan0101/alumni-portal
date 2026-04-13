@@ -23,11 +23,7 @@ export default function EditProfile() {
 
     const fetchUser = async () => {
       try {
-        const res = await API.get("/users/me", {
-          headers: {
-            Authorization: `Bearer ${token}`, // ✅ FIXED
-          },
-        });
+        const res = await API.get("/users/me");
 
         const user = res.data;
 
