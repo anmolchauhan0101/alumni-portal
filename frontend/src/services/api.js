@@ -1,10 +1,9 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api",
+  baseURL: "https://alumni-portal-a442.onrender.com/api",
 });
 
-// Attach token automatically
 API.interceptors.request.use((req) => {
   if (typeof window !== "undefined") {
     const token = localStorage.getItem("token");
