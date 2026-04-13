@@ -7,6 +7,7 @@ import Sidebar from "../components/Sidebar";
 import RightPanel from "../components/RightPanel";
 import Footer from "../components/Footer";
 
+export const dynamic = "force-dynamic";
 export default function RootLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [rightOpen, setRightOpen] = useState(false);
