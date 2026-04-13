@@ -20,7 +20,7 @@ export default function Login() {
       });
 
       // ✅ Save token
-      localStorage.setItem("token", res.data.token);
+      console.log("TOKEN SAVED:", res.data.token);
 
       // 🔥 FIX: notify header instantly
       window.dispatchEvent(new Event("authChanged"));

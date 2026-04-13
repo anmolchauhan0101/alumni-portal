@@ -21,31 +21,26 @@ exports.register = async (req, res) => {
 };
 exports.login = async (req, res) => {
   try {
-    console.log("BODY:", req.body);
-
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
-    console.log("USER:", user);
 
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    console.log("PASSWORD MATCH:", isMatch);
 
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid password" });
     }
 
-    const secret = process.env.JWT_SECRET || "fallback_secret";
-
-const token = jwt.sign(
-  { id: user._id },
-  secret,
-  { expiresIn: "7d" }
-);
+    // ✅ ONLY use env secret (NO fallback)
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
 
     res.json({ token });
 
