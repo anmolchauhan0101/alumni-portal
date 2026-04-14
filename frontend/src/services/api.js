@@ -1,24 +1,19 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://alumni-portal-a442.onrender.com/api", // ✅ your backend
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
 });
 
-// ✅ attach token automatically
+// 🔥 attach token EVERY request
 API.interceptors.request.use((req) => {
-  import axios from "axios";
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("token");
 
-const API = axios.create({
-  baseURL: "https://alumni-portal-a442.onrender.com/api",
-});
+    console.log("SENDING TOKEN:", token);
 
-API.interceptors.request.use((req) => {
-  const token = localStorage.getItem("token");
-
-  console.log("SENDING TOKEN:", token); // 🔍 DEBUG
-
-  if (token) {
-    req.headers.Authorization = `Bearer ${token}`;
+    if (token) {
+      req.headers.Authorization = `Bearer ${token}`;
+    }
   }
 
   return req;

@@ -19,13 +19,13 @@ export default function Login() {
       password,
     });
 
-    // ✅ FORCE STORE TOKEN
+    // ✅ ACTUAL SAVE (THIS WAS MISSING)
     localStorage.setItem("token", res.data.token);
 
-    // 🔍 DEBUG
-    console.log("TOKEN AFTER SAVE:", localStorage.getItem("token"));
+    console.log("TOKEN STORED:", localStorage.getItem("token"));
 
-    router.push("/dashboard");
+    // ✅ HARD REDIRECT
+    window.location.href = "/dashboard";
 
   } catch (err) {
     console.log("LOGIN ERROR:", err.response?.data || err.message);
