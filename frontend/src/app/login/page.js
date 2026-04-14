@@ -11,27 +11,27 @@ export default function Login() {
   const [password, setPassword] = useState("");
 
   const handleLogin = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      const res = await API.post("/auth/login", {
-        email,
-        password,
-      });
+  try {
+    const res = await API.post("/auth/login", {
+      email,
+      password,
+    });
 
-      // ✅ IMPORTANT FIX
-      localStorage.setItem("token", res.data.token);
+    // ✅ FORCE STORE TOKEN
+    localStorage.setItem("token", res.data.token);
 
-      // notify UI
-      window.dispatchEvent(new Event("authChanged"));
+    // 🔍 DEBUG
+    console.log("TOKEN AFTER SAVE:", localStorage.getItem("token"));
 
-      router.push("/dashboard");
+    router.push("/dashboard");
 
-    } catch (err) {
-      console.error(err);
-      alert("Login failed");
-    }
-  };
+  } catch (err) {
+    console.log("LOGIN ERROR:", err.response?.data || err.message);
+    alert("Login failed");
+  }
+};
 
   return (
     <div className="flex justify-center items-center h-screen bg-slate-900">

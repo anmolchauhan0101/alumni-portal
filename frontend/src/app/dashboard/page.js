@@ -7,26 +7,38 @@ import { useRouter } from "next/navigation";
 export default function Dashboard() {
   const router = useRouter();
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // ✅ NEW
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    // ✅ Step 1: If no token → go login
+    if (!token) {
+      router.push("/login");
+      return;
+    }
+
     const fetchUser = async () => {
       try {
-        const res = await API.get("/users/me"); // ✅ correct
+        const res = await API.get("/users/me");
         setUser(res.data);
       } catch (err) {
-        console.log("AUTH ERROR:", err);
-        localStorage.removeItem("token");
-        router.push("/login");
+        console.log("ERROR:", err.response?.data || err.message);
+
+        // ✅ Step 2: Only remove token if truly invalid
+        if (err.response?.status === 401) {
+          localStorage.removeItem("token");
+          router.push("/login");
+        }
       } finally {
-        setLoading(false); // ✅ stop loading
+        setLoading(false);
       }
     };
 
     fetchUser();
   }, [router]);
 
-  // ✅ prevent flicker + loop
+  // ✅ Step 3: loading screen
   if (loading) {
     return (
       <div className="text-center text-gray-400 mt-20">
@@ -51,17 +63,17 @@ export default function Dashboard() {
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-        <div className="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow hover:scale-105 transition">
+        <div className="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow">
           <h3 className="text-gray-400 text-sm">Connections</h3>
           <p className="text-2xl font-bold text-white">0</p>
         </div>
 
-        <div className="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow hover:scale-105 transition">
+        <div className="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow">
           <h3 className="text-gray-400 text-sm">Messages</h3>
           <p className="text-2xl font-bold text-white">0</p>
         </div>
 
-        <div className="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow hover:scale-105 transition">
+        <div className="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow">
           <h3 className="text-gray-400 text-sm">Profile Views</h3>
           <p className="text-2xl font-bold text-white">0</p>
         </div>
@@ -96,7 +108,7 @@ export default function Dashboard() {
 
         <button
           onClick={() => router.push("/dashboard/edit")}
-          className="mt-5 bg-green-600 px-4 py-2 rounded-lg text-white hover:bg-green-700 transition"
+          className="mt-5 bg-green-600 px-4 py-2 rounded-lg text-white hover:bg-green-700"
         >
           Edit Profile
         </button>
