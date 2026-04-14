@@ -18,25 +18,34 @@ export default function Dashboard() {
       return;
     }
 
-    const fetchUser = async () => {
-      try {
-        const res = await API.get("/users/me");
-        setUser(res.data);
-      } catch (err) {
-        console.log("ERROR:", err.response?.data || err.message);
+   useEffect(() => {
+  const token = localStorage.getItem("token");
 
-        // ✅ Step 2: Only remove token if truly invalid
-        if (err.response?.status === 401) {
-          localStorage.removeItem("token");
-          router.push("/login");
-        }
-      } finally {
-        setLoading(false);
+  console.log("DASHBOARD TOKEN:", token);
+
+  if (!token) {
+    router.push("/login");
+    return;
+  }
+
+  const fetchUser = async () => {
+    try {
+      const res = await API.get("/users/me");
+      setUser(res.data);
+    } catch (err) {
+      console.log("FETCH ERROR:", err.response?.status);
+
+      // ❌ DO NOT REMOVE TOKEN HERE
+      if (err.response?.status === 401) {
+        router.push("/login");
       }
-    };
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchUser();
-  }, [router]);
+  fetchUser();
+}, []);
 
   // ✅ Step 3: loading screen
   if (loading) {

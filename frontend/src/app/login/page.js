@@ -19,13 +19,15 @@ export default function Login() {
       password,
     });
 
-    // ✅ ACTUAL SAVE (THIS WAS MISSING)
+    // ✅ SAVE TOKEN
     localStorage.setItem("token", res.data.token);
 
-    console.log("TOKEN STORED:", localStorage.getItem("token"));
+    console.log("TOKEN AFTER SAVE:", localStorage.getItem("token"));
 
-    // ✅ HARD REDIRECT
-    window.location.href = "/dashboard";
+    // ✅ SMALL DELAY (important)
+    setTimeout(() => {
+      window.location.href = "/dashboard";
+    }, 500);
 
   } catch (err) {
     console.log("LOGIN ERROR:", err.response?.data || err.message);
