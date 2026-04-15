@@ -1,4 +1,4 @@
-<img width="1920" height="876" alt="image" src="https://github.com/user-attachments/assets/61a9bafc-cf03-4fca-a0e8-29678d597207" /># 🚀 Alumni Connect Platform
+# 🚀 Alumni Connect Platform
 
 A full-stack web application designed to connect students with alumni for networking, mentorship, and career opportunities. Built using the MERN stack, this platform enables seamless interaction and secure communication between users.
 
